@@ -26,7 +26,6 @@ public class ServerManager {
 
 	/**
 	 * Constructor for ServerManager
-	 * @param server Server the low level ServerSocket implementation
 	 * @throws IOException 
 	 * */
 	public ServerManager() throws IOException {
@@ -41,12 +40,12 @@ public class ServerManager {
 			Socket newServerSocket = server.accept();
 			newServerSocket.setTcpNoDelay(true);
 			
-			
-//			SenderWorker senderWorker = new SenderWorker(newServerSocket,data);
+
 			ReaderWorker readerWorker = new ReaderWorker(newServerSocket);
-//			Future<Object> futureSender = this.executorServiceSender.submit(senderWorker);
-//			Future<Object> futureReader = this.executorServiceReader.submit(readerWorker);
+
+			byte[] byte_data = {23,2,34,2,3};
 			executorServiceReader.submit(new ReaderWorker(newServerSocket));
+			executorServiceSender.submit(new SenderWorker(newServerSocket,byte_data));
 //			System.out.println(new String((byte[])futureReader.get(),StandardCharsets.UTF_8));
 			
 		}

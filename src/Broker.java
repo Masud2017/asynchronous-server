@@ -31,17 +31,13 @@ public class Broker {
 	 */
 	public static void main(String[] arg) throws IOException, InterruptedException, ExecutionException, NumberFormatException, TimeoutException{
 		ServerManager manager = new ServerManager();
-//		ServerManager manager2 = new ServerManager();
+
 		System.out.println("Thread count : "+Configuration.MAXIMUM_THREAD_COUNT);
-		
-//		ExecutorService service = Executors.newFixedThreadPool(10);
+
 		System.out.println("Server that is asynchronous at port : "+Configuration.port);
-//		ServerSocket server = new ServerSocket(4444);
 		
 		
 			manager.listen();
-//			sock.setTcpNoDelay(true);
-//			service.submit(new ReaderWorker(sock));
 			
 			System.out.println("The count of thread : "+Thread.activeCount());
 	}
