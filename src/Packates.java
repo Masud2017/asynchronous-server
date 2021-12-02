@@ -19,6 +19,7 @@ public class Packates {
      * */
     public static byte[] connect_packate(byte[] variable_header,byte[] payload) {
         byte[] connect_packate;
+        
         return null;
     }
 

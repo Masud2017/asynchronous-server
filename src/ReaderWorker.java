@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 
-public class ReaderWorker implements Callable<Object>{
+public class ReaderWorker implements Runnable{
 	private Socket serverSocket;
 	private BufferedInputStream bufferedInputStream;
 	private InputStream inp;
@@ -24,29 +24,38 @@ public class ReaderWorker implements Callable<Object>{
 	}
 
 	@Override
-	public Object call() throws Exception {
-		serverSocket.setSoTimeout(1000);
-		byte[] data = new byte[44];
-		this.bufferedInputStream.read(data);
-		
-		System.out.println(new String(data,StandardCharsets.UTF_8));
-		for (byte dt : data) {
-			System.out.println("Different segment of data: "+dt);
+	public void run() {
+		try {
+			while(true) {
+				serverSocket.setSoTimeout(1000);
+				byte[] data = new byte[44];
+				this.bufferedInputStream.read(data);
+
+				System.out.println(new String(data,StandardCharsets.UTF_8));
+				for (byte dt : data) {
+					System.out.println("Different segment of data: "+dt);
+				}
+
+				byte[] data2 = new byte[4];
+				data2[0] = 32;
+				data2[1] = 0x2;
+				data2[2] = 0x00;
+				data2[3] = 0x00;
+				this.bufferedOutputStream.write(data2);
+				this.bufferedOutputStream.flush();
+			}
+		} catch(IOException e) {}finally {
+			try {
+				serverSocket.close();
+				this.bufferedOutputStream.close();
+				this.bufferedInputStream.close();
+				this.inp.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
-		byte[] data2 = new byte[4];
-		data2[0] = 32;
-		data2[1] = 0x2;
-		data2[2] = 0x00;
-		data2[3] = 0x00;
-		this.bufferedOutputStream.write(data2);
-		this.bufferedOutputStream.flush();
-		this.bufferedInputStream.close();
-		this.bufferedOutputStream.close();
-		this.serverSocket.close();
-		this.inp.close();
 
-		return data;
 	}
 
 }

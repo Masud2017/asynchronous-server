@@ -37,8 +37,8 @@ public class Broker {
 		System.out.println("Server that is asynchronous at port : "+Configuration.port);
 		
 		
-			manager.listen();
+		manager.listen();
 			
-			System.out.println("The count of thread : "+Thread.activeCount());
+		System.out.println("The count of thread : "+Thread.activeCount());
 	}
 }
